@@ -1,3 +1,5 @@
+/* @flow */
+
 import firebase from 'firebase';
 import React, { Component } from 'react';
 import { LayoutAnimation, RefreshControl } from 'react-native';
@@ -8,7 +10,7 @@ import Fire from '../Fire';
 // Set the default number of images to load for each pagination.
 const PAGE_SIZE = 5;
 
-export default class FeedScreen extends Component {
+export default class FeedScreen extends Component<> {
   state = {
     loading: false,
     posts: [],

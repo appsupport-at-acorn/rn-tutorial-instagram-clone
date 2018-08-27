@@ -49,3 +49,21 @@ Open another window, then:
 sh adbreverse.sh
 exp android
 ```
+
+## Setup flow
+
+nano .babelrc
+
+```json
+{
+  "presets": ["react-native"]
+}
+```
+
+apm install nuclide
+yarn add --dev flow-bin
+yarn run flow init
+yarn add --dev babel-cli babel-preset-react-native
+
+Install flowtype to atom via Atom-->Preferences-->+Install-->flow-ide (by flowtype)
+https://atom.io/packages/ide-flowtype
