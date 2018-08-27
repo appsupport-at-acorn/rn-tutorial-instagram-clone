@@ -31,8 +31,13 @@ type FirePost = {
 };
 
 export default class FeedScreen extends Component<Props, State> {
+  state:State= {
+    loading: false,
+    posts: [],
+    data: {},
+  };
 
-  lastKnownKey:string;
+  lastKnownKey:string = '';
 
   constructor(props:any){
     super(props);
