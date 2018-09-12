@@ -39,17 +39,6 @@ export default class FeedScreen extends Component<Props, State> {
 
   lastKnownKey:string = '';
 
-  constructor(props:any){
-    super(props);
-
-    this.state = {
-      loading: false,
-      posts: [],
-      data: {},
-    };
-  }
-
-
   componentDidMount() {
     // Check if we are signed in...
     if (Fire.shared.uid) {
