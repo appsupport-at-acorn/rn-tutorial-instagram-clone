@@ -1,4 +1,6 @@
 // Import React Navigation
+/* @flow */
+
 import {
   createBottomTabNavigator,
   createStackNavigator,

@@ -1,3 +1,5 @@
+/* @flow */
+
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Image, TextInput, View } from 'react-native';
@@ -5,7 +7,21 @@ import HeaderButtons from 'react-navigation-header-buttons';
 
 import Fire from '../Fire';
 
-export default class NewPostScreen extends React.Component<Props> {
+
+type Props = {
+  navigation: any
+};
+
+type State = {
+  text:string
+};
+
+
+export default class NewPostScreen extends React.Component<Props, State> {
+  state:State = {
+    text:''
+  };
+
   static navigationOptions = ({ navigation }) => ({
     title: 'New Post',
     headerRight: (
@@ -26,8 +42,6 @@ export default class NewPostScreen extends React.Component<Props> {
       </HeaderButtons>
     ),
   });
-
-  state = { text: '' };
 
   render() {
     const { image } = this.props.navigation.state.params;

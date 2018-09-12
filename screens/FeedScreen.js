@@ -1,3 +1,5 @@
+/* @flow */
+
 import firebase from 'firebase';
 import React, { Component } from 'react';
 import { LayoutAnimation, RefreshControl } from 'react-native';
@@ -8,12 +10,34 @@ import Fire from '../Fire';
 // Set the default number of images to load for each pagination.
 const PAGE_SIZE = 5;
 
-export default class FeedScreen extends Component {
-  state = {
+type Props = { /* ... */ };
+
+type State = {
+  loading:boolean,
+  posts:Array<Object>,
+  data:Object,
+};
+
+type FirePost = {
+  key:string,
+  image:?string,
+  imageHeight:number,
+  imageWidth:number,
+  name:string,
+  text:string,
+  timestamp:number,
+  uid:string,
+  user: Object,
+};
+
+export default class FeedScreen extends Component<Props, State> {
+  state:State= {
     loading: false,
     posts: [],
     data: {},
   };
+
+  lastKnownKey:string = '';
 
   componentDidMount() {
     // Check if we are signed in...
@@ -31,22 +55,43 @@ export default class FeedScreen extends Component {
   }
 
   // Append the item to our states `data` prop
-  addPosts = posts => {
-    this.setState(previousState => {
+  addPosts = (posts:Object) => {
+
+    let getNewStateFn = (previousState:State, newPosts:Object):State => {
+
+      // Create an object containing all of the posts, arranged by key.
       let data = {
         ...previousState.data,
-        ...posts,
+        ...newPosts,
       };
+
+      // Get as an array of objects instead.
+      let dataAsArray:Array<FirePost> = (Object.values(data):any);
+
+      // Compare two posts by timestamp
+      let compareFn = (a:FirePost, b:FirePost):number => {
+        return (b.timestamp - a.timestamp);
+      }
+
+      // sortedValues will hold an array of FirePost objects
+      let sortedValues = dataAsArray.sort(compareFn);
       return {
-        data,
-        // Sort the data by timestamp
-        posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp),
+        ...previousState,
+
+        // Overwrite data
+        data:data,
+
+        // Overwrite posts with the sorted values.
+        posts:sortedValues
       };
-    });
+    }
+    let newState = getNewStateFn(this.state, posts);
+
+    this.setState(newState);
   };
 
   // Call our database and ask for a subset of the user posts
-  makeRemoteRequest = async lastKey => {
+  makeRemoteRequest = async (lastKey:?string) => {
     // If we are currently getting posts, then bail out..
     if (this.state.loading) {
       return;
@@ -60,6 +105,7 @@ export default class FeedScreen extends Component {
     });
 
     this.lastKnownKey = cursor;
+
     // Iteratively add posts
     let posts = {};
     for (let child of data) {
