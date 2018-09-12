@@ -1,3 +1,5 @@
+/* @flow */
+
 import uuid from 'uuid';
 
 import getUserInfo from './utils/getUserInfo';
@@ -12,6 +14,7 @@ const collectionName = 'snack-SJucFknGX';
 
 class Fire {
   constructor() {
+    /*
     firebase.initializeApp({
       apiKey: 'AIzaSyAQan8_IJ6fY6F8E06FMDKVbWlrdI75mvA',
       authDomain: 'instahamm-b09ce.firebaseapp.com',
@@ -20,6 +23,18 @@ class Fire {
       storageBucket: 'instahamm-b09ce.appspot.com',
       messagingSenderId: '716190466061',
     });
+    */
+      // Initialize Firebase
+      firebase.initializeApp({
+        apiKey: "AIzaSyBJrc2l8UEGRFuUyZu4etpCobInh07vHto",
+        authDomain: "inst-acorn.firebaseapp.com",
+        databaseURL: "https://inst-acorn.firebaseio.com",
+        projectId: "inst-acorn",
+        storageBucket: "inst-acorn.appspot.com",
+        messagingSenderId: "819318825844"
+      });
+      firebase.initializeApp(config);
+    </script>
     // Some nonsense...
     firebase.firestore().settings({ timestampsInSnapshots: true });
 
