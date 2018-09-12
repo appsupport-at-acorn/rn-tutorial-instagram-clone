@@ -27,7 +27,10 @@ Overview
   * Swift/Objective-C
   * Java/Kotlin
   * C/C++
-
+* Available libraries
+  * Maps (Google/Apple, etc.)
+  * Vector-icons, Fonts, etc.
+  * Buttons, video players, GPS trackers, etc.
 
 <!-- slide -->
 This is slide 1
