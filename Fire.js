@@ -14,27 +14,29 @@ const collectionName = 'snack-SJucFknGX';
 
 class Fire {
   constructor() {
-    /*
-    firebase.initializeApp({
-      apiKey: 'AIzaSyAQan8_IJ6fY6F8E06FMDKVbWlrdI75mvA',
-      authDomain: 'instahamm-b09ce.firebaseapp.com',
-      databaseURL: 'https://instahamm-b09ce.firebaseio.com',
-      projectId: 'instahamm-b09ce',
-      storageBucket: 'instahamm-b09ce.appspot.com',
-      messagingSenderId: '716190466061',
-    });
-    */
-      // Initialize Firebase
+    // Initialize Firebase
+    if (false){
+      // Original database
       firebase.initializeApp({
-        apiKey: "AIzaSyBJrc2l8UEGRFuUyZu4etpCobInh07vHto",
-        authDomain: "inst-acorn.firebaseapp.com",
-        databaseURL: "https://inst-acorn.firebaseio.com",
-        projectId: "inst-acorn",
-        storageBucket: "inst-acorn.appspot.com",
-        messagingSenderId: "819318825844"
+        apiKey: 'AIzaSyAQan8_IJ6fY6F8E06FMDKVbWlrdI75mvA',
+        authDomain: 'instahamm-b09ce.firebaseapp.com',
+        databaseURL: 'https://instahamm-b09ce.firebaseio.com',
+        projectId: 'instahamm-b09ce',
+        storageBucket: 'instahamm-b09ce.appspot.com',
+        messagingSenderId: '716190466061',
       });
-      firebase.initializeApp(config);
-    </script>
+    }
+    else {
+      // Acorn database
+      firebase.initializeApp({
+        apiKey: 'AIzaSyBJrc2l8UEGRFuUyZu4etpCobInh07vHto',
+        authDomain: 'inst-acorn.firebaseapp.com',
+        databaseURL: 'https://inst-acorn.firebaseio.com',
+        projectId: 'inst-acorn',
+        storageBucket: 'inst-acorn.appspot.com',
+        messagingSenderId: '819318825844'
+      });
+    }
     // Some nonsense...
     firebase.firestore().settings({ timestampsInSnapshots: true });
 
@@ -93,7 +95,7 @@ class Fire {
       );
 
       const remoteUri = await this.uploadPhotoAsync(reducedImage);
-      this.collection.add({
+      let newPicture = {
         text,
         uid: this.uid,
         timestamp: this.timestamp,
@@ -101,7 +103,10 @@ class Fire {
         imageHeight: height,
         image: remoteUri,
         user: getUserInfo(),
-      });
+      };
+      newPicture.user.deviceId = (newPicture.user.deviceId)
+        ? newPicture.user.deviceId : "simulator";
+      this.collection.add(newPicture);
     } catch ({ message }) {
       alert(message);
     }
