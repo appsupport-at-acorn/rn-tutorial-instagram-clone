@@ -31,6 +31,7 @@ Overview
   * Maps (Google/Apple, etc.)
   * Vector-icons, Fonts, etc.
   * Buttons, video players, GPS trackers, etc.
+* jsx examples
 
 <!-- slide -->
 ### What is React-Native?
