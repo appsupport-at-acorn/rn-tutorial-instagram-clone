@@ -144,10 +144,64 @@ react-native run-android
 <!-- slide -->
 ### Example App 1
 ```javascript
-TODO put the app code here.
+/* @flow */
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View, ListView} from 'react-native';
+
+type Props = {};
+type State = { dataSource: any };
+export default class App extends Component<Props, State> {
+  state:State = { dataSource:[] };
+
+  constructor() {
+    super()
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      dataSource: ds.cloneWithRows(
+        ['Apples', 'Oranges', 'Pears', 'Tomatoes', 'Bananas']
+      ),
+    };
+  }
+
+  render() {
+    return (
+      <View>
+        <Text style={{height: 50}}></Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData:string, unused:string, index:string) =>
+              <Text>  Row {index} = {rowData}</Text>}
+        >
+        </ListView>
+      </View>
+    );
+  }
+}
+
 
 ```
 
+<!-- slide -->
+### Example App 1.1 - generated table
+
+Use the same app as previous, but switch the constructor for a constructor that can generate the table.
+```javascript
+
+  constructor() {
+    super()
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    let numbers = [];
+    for (let index = 0; index < 100; index++) {
+      numbers[index] = index.toString();
+    }
+    this.state = {
+      dataSource: ds.cloneWithRows(
+        numbers
+      ),
+    };
+  }
+
+```
 <!-- slide data-notes=
 "Expo uses npm install -g create-react-native-app"
 create-react-native-app AwesomeExpoProject
