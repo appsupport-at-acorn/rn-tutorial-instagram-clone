@@ -1,5 +1,3 @@
-/* @flow */
-
 import { Constants, ImagePicker, Permissions } from 'expo';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
