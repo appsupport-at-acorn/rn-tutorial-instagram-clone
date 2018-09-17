@@ -31,6 +31,7 @@ Overview
   * Maps (Google/Apple, etc.)
   * Vector-icons, Fonts, etc.
   * Buttons, video players, GPS trackers, etc.
+* jsx examples
 
 <!-- slide -->
 ### What is React-Native?
@@ -77,10 +78,6 @@ Learn Once, Write Anywhere
   - This enables **live reload** and **hot reload** on changes to the JavaScript UX.
 - In Release mode, the JavaScript code is bundled as a blob included in the release app.
 
-
-<!-- slide data-notes=
-"Write your note here"
--->
 <!-- slide -->
 ### Why use React-Native (Pros)
 - Rapid development
@@ -93,25 +90,7 @@ Learn Once, Write Anywhere
 - One development team needed with Javascript competence, rather than separate Android/iOS teams
 - Use native views, buttons, lists, video-players, camera app, gallery app, maps, etc, but from javascript, with the speed and integration that this entails.
 
-<!-- slide -->
-### React-Native Cons
-- Environment setup
-- Developing in Windows is a piece of #@&%!
-  - Slow build time
-  - Can only build for Android
-  - Path length limitations in Windows OS
-- **Dependencies must be continually updated**
-  - Android Dependencies
-    - Android Studio, Android Build Tools, Gradle, Java, Kotlin, Gradle, Gradle, Gradle
-  - XCode Dependencies
-    - Swift language, Swift libraries, Swift deprecation
-  - RN Dependencies.
-    - Need latest RN to support latest XCode to support latest iPhone, but latest RN breaks native module camera, GPS, and maps.
-    - Need latest RN to support latest Android Studio, but that breaks native module soundplayer, imageshrinker, and cow pusher.
-  - Workaround 1: Most 3rd party modules are published on github, so you can wait until the author publishes a fix, or fix it yourself and be a hero.
-  - Workaround 2: Wait before upgrading your build tools/XCode/Android Studio
-  - Workaround 3: Lock all native module versions and javascript in your package.lock.
-  - Workaround 4: Use **Expo**
+
 
 <!-- slide -->
 ### Example App 1
@@ -142,11 +121,135 @@ react-native run-android
 
 <!-- slide -->
 ### Example App 1
+
+Copy and paste this code over your App.js code for a basic example of how to use a native ListView component on both Android and iOS.
+
 ```javascript
-TODO put the app code here.
+/* @flow */
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View, ListView} from 'react-native';
+
+type Props = {};
+type State = { dataSource: any };
+export default class App extends Component<Props, State> {
+  state:State = { dataSource:[] };
+
+  constructor() {
+    super()
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    let numbers = [...Array(100)];
+    numbers.map((value, index, array)=>{array[index] = index.toString();})
+    this.state = {
+      dataSource: ds.cloneWithRows(
+        numbers
+      ),
+    };
+  }
+  render() {
+    return (
+      <View>
+        <Text style={{height: 50}}></Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData:string, unused:string, index:string) =>
+              <Text>  Row {index} = {rowData}</Text>}
+        >
+        </ListView>
+      </View>
+    );
+  }
+}
+```
+
+<!-- slide -->
+### Screenshot, Android vs IOS
+![app1](tutorial/app1_screenshot.png)
+
+<!-- slide -->
+#### Breakdown of the first app, part 1/2
+
+```javascript
+/* @flow */
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View, ListView} from 'react-native';
 
 ```
 
+Import what you need from react and react native.
+
+```javascript
+type Props = {};
+type State = { dataSource: any };
+export default class App extends Component<Props, State> {
+  state:State = { dataSource:[] };
+
+```
+These flow definitions declare the type of props and state which your component expects.
+
+```javascript
+  constructor() {
+    super()
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    let numbers = [...Array(100)];
+    numbers.map((value, index, array)=>{array[index] = index.toString();})
+    this.state = {
+      dataSource: ds.cloneWithRows(
+        numbers
+      ),
+    };
+  }
+```
+The constructor is called ONCE on app startup. Note: not called on HOT reload.
+
+<!-- slide -->
+
+
+#### Breakdown of the first app, part 2/2
+```javascript
+  render() {
+    // return JSX which defines the screen based on current state and props.
+    return (
+      <View>
+        <Text style={{height: 50}}></Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData:string, unused:string, index:string) =>
+              <Text>  Row {index} = {rowData}</Text>}
+        >
+        </ListView>
+      </View>
+    );
+  }
+}
+```
+
+
+
+The render() function returns the jsx which defines the screen.
+The list view component's props expect a function (renderRow) which knows how to display each row. We define this here too.
+
+
+<!-- slide -->
+### Example App 1.1 - generated table
+
+Use the same app as previous, but switch the constructor for a constructor that can generate the table.
+```javascript
+
+  constructor() {
+    super()
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    let numbers = [];
+    for (let index = 0; index < 100; index++) {
+      numbers[index] = index.toString();
+    }
+    this.state = {
+      dataSource: ds.cloneWithRows(
+        numbers
+      ),
+    };
+  }
+
+```
 <!-- slide data-notes=
 "Expo uses npm install -g create-react-native-app"
 create-react-native-app AwesomeExpoProject
@@ -154,3 +257,23 @@ create-react-native-app AwesomeExpoProject
 
 <!-- slide -->
 This is slide 2
+
+<!-- slide -->
+### React-Native Cons
+- Environment setup
+- Developing in Windows is a piece of #@&%!
+  - Slow build time
+  - Can only build for Android
+  - Path length limitations in Windows OS
+- **Dependencies must be continually updated**
+  - Android Dependencies
+    - Android Studio, Android Build Tools, Gradle, Java, Kotlin, Gradle, Gradle, Gradle
+  - XCode Dependencies
+    - Swift language, Swift libraries, Swift deprecation
+  - RN Dependencies.
+    - Need latest RN to support latest XCode to support latest iPhone, but latest RN breaks native module camera, GPS, and maps.
+    - Need latest RN to support latest Android Studio, but that breaks native module soundplayer, imageshrinker, and cow pusher.
+  - Workaround 1: Most 3rd party modules are published on github, so you can wait until the author publishes a fix, or fix it yourself and be a hero.
+  - Workaround 2: Wait before upgrading your build tools/XCode/Android Studio
+  - Workaround 3: Lock all native module versions and javascript in your package.lock.
+  - Workaround 4: Use **Expo**
